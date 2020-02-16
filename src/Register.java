@@ -11,6 +11,7 @@ import java.util.Enumeration;
 @WebServlet("/Register")
 public class Register extends HttpServlet {
     //用户注册接口,用户点击注册进入界面,提交一系列表单并且确认没有格式错误之后存入数据库,并且转到登录界面
+    //但是要对account进行查重,发现有重复的要提示用户
     //要填写的数据:account,password,name不能空其他都可空
 
     //JDBC驱动名,数据库URL
@@ -33,13 +34,12 @@ public class Register extends HttpServlet {
         Connection connection =null;
         //SQL查询
         Statement statement =null;
-
-
+        //获取输出流
+        PrintWriter out = resp.getWriter();
 
         try {
 
-            //获取输出流
-            PrintWriter out = resp.getWriter();
+
             //制作返回html
             String title = "注册";
             String docType = "<!DOCTYPE html>\n";
@@ -73,10 +73,18 @@ public class Register extends HttpServlet {
                     out.print(paramName+"没有值");
                     break;
                 }else {
-
+                    //判断account是否重复
+                    //本来想要用数据库的唯一约束处理异常来做,但是不知道怎么具体的确认是违反唯一约束而不是别的错误,因此还是用搜索来做
+                    if(paramName.equals("account")){
+                        ResultSet res_acc = statement.executeQuery("SELECT account FROM USER WHERE account="+paramValue);
+                        if(res_acc.next()){
+                            System.out.println("账号重复了");
+                            out.println("账号重复,请输入其他账号");
+                            break;
+                        }
+                    }
                     out.println(paramName+":"+paramValue+",");
                     if(!paramNames.hasMoreElements()){//当前是最后一项了
-                        out.println(paramName);
                         sql = sql+paramValue+")";
                     }else {
                         sql = sql+paramValue+",";
@@ -96,8 +104,7 @@ public class Register extends HttpServlet {
             }
 
 
-            //添加html尾部
-            out.println("</body></html>");
+
             //完成后关闭
             statement.close();
             connection.close();
@@ -109,8 +116,11 @@ public class Register extends HttpServlet {
             e.printStackTrace();
         }catch (SQLException e) {
             System.out.println("JDBC错误");
+//            out.println("jdbc error,传入参数不对,sql语句不能执行,500");
             e.printStackTrace();
         }finally {
+            //添加html尾部
+            out.println("</body></html>");
             // 最后是用于关闭资源的块
             try{
                 if(statement!=null)
