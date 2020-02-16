@@ -15,15 +15,12 @@ import java.util.Enumeration;
 @WebServlet("/UploadProfilePicture")
 @MultipartConfig
 public class UploadProfilePicture extends HttpServlet {
-    //session刷新一下
-
-
     //JDBC驱动名,数据库URL
-    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/demo1_login?useSSL=false&serverTimezone=UTC";
+    static final String JDBC_DRIVER = data.JDBC_DRIVER;
+    static final String DB_URL = data.DB_URL;
     //数据库用户密码
-    static final  String USER = "root";
-    static final String PASS = "jiweihao";
+    static final  String USER = data.USER;
+    static final String PASS = data.PASS;
 
 
     @Override
