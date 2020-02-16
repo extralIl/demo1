@@ -25,3 +25,27 @@
 访问Register,post中写参数
 最少有account,password,name
 且account不能重复,如果发现与数据库中的重复会返回提示页面
+
+
+测试:
+
+启动tomcat,配置好环境,并创建好数据库,表
+
+注册:
+http://localhost:8080/demo1_Login_war_exploded/Register?account=123&password="as"&name="ex"&age=12&sex=1&avatar=null&signature="asdf"
+类型是post
+
+登录:启动tomcat后,url后面写login.html,输入账号密码登录
+
+登出:http://localhost:8080/demo1_Login_war_exploded/Logout
+
+访问用户信息: 登录页面后点击访问,或者http://localhost:8080/demo1_Login_war_exploded/GetUserInfo
+
+上传图片:登录后访问up.html
+
+
+
+
+
+
+
