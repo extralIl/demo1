@@ -29,7 +29,7 @@
 
 测试:
 
-启动tomcat,配置好环境,并创建好数据库,表
+启动tomcat,配置好环境,可用navicat导入demo1_login.sql文件导入表结构和数据
 
 注册:
 http://localhost:8080/demo1_Login_war_exploded/Register?account=123&password="as"&name="ex"&age=12&sex=1&avatar=null&signature="asdf"
